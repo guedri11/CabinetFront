@@ -1,15 +1,13 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/_services';
-import { User } from '@app/_models';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent implements OnInit {
-    form: FormGroup;
-    user: User;
+    form!: FormGroup;
     id?: string;
     title!: string;
     loading = false;
@@ -22,37 +20,31 @@ export class AddEditComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         private alertService: AlertService
-    ) {
-        this.user = {} as User;
+    ) { }
+
+    ngOnInit() {
+        this.id = this.route.snapshot.params['id'];
+
         // form with validation rules
         this.form = this.formBuilder.group({
-            prenom: ['', Validators.required],
-            nom: ['', Validators.required],
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
             username: ['', Validators.required],
-            password: ['', [Validators.minLength(6), ...(this.id ? [] : [Validators.required])]],
-            adresse: [''],
-            email: [''],
-            telephone: ['']
+            // password only required in add mode
+            password: ['', [Validators.minLength(6), ...(!this.id ? [Validators.required] : [])]]
         });
-    }
 
-        this.title = 'Add Patient';
+        this.title = 'Add User';
         if (this.id) {
             // edit mode
-            this.title = 'Edit Patient';
+            this.title = 'Edit User';
             this.loading = true;
             this.accountService.getById(this.id)
                 .pipe(first())
-                .subscribe(
-                    (user: User) => {
-                        this.form.patchValue(user);
-                        this.loading = false;
-                    },
-                    error => {
-                        this.alertService.error(error);
-                        this.loading = false;
-                    }
-                );
+                .subscribe(x => {
+                    this.form.patchValue(x);
+                    this.loading = false;
+                });
         }
     }
 
@@ -71,37 +63,24 @@ export class AddEditComponent implements OnInit {
         }
 
         this.submitting = true;
-        this.saveUser();
+        this.saveUser()
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    this.alertService.success('User saved', { keepAfterRouteChange: true });
+                    this.router.navigateByUrl('/users');
+                },
+                error: error => {
+                    this.alertService.error(error);
+                    this.submitting = false;
+                }
+            })
     }
 
     private saveUser() {
-        const user = this.form.value;
-        if (this.id) {
-            this.accountService.update(this.id, user)
-                .pipe(first())
-                .subscribe({
-                    next: () => {
-                        this.alertService.success('User updated successfully', { keepAfterRouteChange: true });
-                        this.router.navigate(['/users']);
-                    },
-                    error: error => {
-                        this.alertService.error(error);
-                        this.submitting = false;
-                    }
-                });
-        } else {
-            this.accountService.register(user)
-                .pipe(first())
-                .subscribe({
-                    next: () => {
-                        this.alertService.success('User created successfully', { keepAfterRouteChange: true });
-                        this.router.navigate(['/users']);
-                    },
-                    error: error => {
-                        this.alertService.error(error);
-                        this.submitting = false;
-                    }
-                });
-        }
+        // create or update user based on id param
+        return this.id
+            ? this.accountService.update(this.id!, this.form.value)
+            : this.accountService.register(this.form.value);
     }
 }
