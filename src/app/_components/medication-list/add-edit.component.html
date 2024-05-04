@@ -1,0 +1,49 @@
+﻿<h1>{{ title }}</h1>
+<form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="mb-3 col">
+      <label class="form-label">Medicine Name</label>
+      <input type="text" formControlName="medicineName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.medicineName.errors }" />
+      <div *ngIf="submitted && f.medicineName.errors" class="invalid-feedback">
+        <div *ngIf="f.medicineName.errors.required">Medicine Name is required</div>
+      </div>
+    </div>
+    <div class="mb-3 col">
+      <label class="form-label">Dosage</label>
+      <input type="text" formControlName="dosage" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dosage.errors }" />
+      <div *ngIf="submitted && f.dosage.errors" class="invalid-feedback">
+        <div *ngIf="f.dosage.errors.required">Dosage is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col">
+      <label class="form-label">Frequency</label>
+      <input type="text" formControlName="frequency" class="form-control" />
+    </div>
+    <div class="mb-3 col">
+      <label class="form-label">Duration</label>
+      <input type="number" formControlName="duration" class="form-control" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col">
+      <label class="form-label">Route</label>
+      <input type="text" formControlName="route" class="form-control" />
+    </div>
+    <div class="mb-3 col">
+      <label class="form-label">Instructions</label>
+      <input type="text" formControlName="instructions" class="form-control" />
+    </div>
+  </div>
+  <div class="mb-3">
+    <button [disabled]="submitting" class="btn btn-primary">
+      <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+      Save
+    </button>
+    <a routerLink="/medications" class="btn btn-link">Cancel</a>
+  </div>
+</form>
+<div *ngIf="loading" class="text-center m-5">
+  <span class="spinner-border spinner-border-lg align-center"></span>
+</div>

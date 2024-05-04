@@ -1,0 +1,55 @@
+﻿<h1>{{ title }}</h1>
+<form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="mb-3 col">
+            <label class="form-label">Patient Name</label>
+            <input type="text" formControlName="patientName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.patientName.errors }" />
+            <div *ngIf="submitted && f.patientName.errors" class="invalid-feedback">
+                <div *ngIf="f.patientName.errors.required">Patient Name is required</div>
+            </div>
+        </div>
+        <div class="mb-3 col">
+            <label class="form-label">Doctor Name</label>
+            <input type="text" formControlName="doctorName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.doctorName.errors }" />
+            <div *ngIf="submitted && f.doctorName.errors" class="invalid-feedback">
+                <div *ngIf="f.doctorName.errors.required">Doctor Name is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col">
+            <label class="form-label">Patient Age</label>
+            <input type="number" formControlName="patientAge" class="form-control" />
+        </div>
+        <div class="mb-3 col">
+            <label class="form-label">Patient Gender</label>
+            <input type="text" formControlName="patientGender" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col">
+            <label class="form-label">Doctor Specialization</label>
+            <input type="text" formControlName="doctorSpecialization" class="form-control" />
+        </div>
+        <div class="mb-3 col">
+            <label class="form-label">Date Issued</label>
+            <input type="date" formControlName="dateIssued" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col">
+            <label class="form-label">Pharmacy Notes</label>
+            <textarea formControlName="pharmacyNotes" class="form-control"></textarea>
+        </div>
+    </div>
+    <div class="mb-3">
+        <button [disabled]="submitting" class="btn btn-primary">
+            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+            Save
+        </button>
+        <a routerLink="/ordonnances" class="btn btn-link">Cancel</a>
+    </div>
+</form>
+<div *ngIf="loading" class="text-center m-5">
+    <span class="spinner-border spinner-border-lg align-center"></span>
+</div>

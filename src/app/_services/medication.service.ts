@@ -14,6 +14,9 @@ export class MedicationService {
   getAllMedications(): Observable<Medication[]> {
     return this.http.get<Medication[]>(`${this.baseUrl}/gm`);
   }
+  getMedicationById(id: number): Observable<Medication> {
+    return this.http.get<Medication>(`${this.baseUrl}/get_med_by_id?id=${id}`);
+  }
 
   addMedication(medication: Medication): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/add_med`, medication);

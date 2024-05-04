@@ -19,4 +19,11 @@ export class OrdonnanceListComponent implements OnInit {
     this.ordonnanceService.getOrdonnances()
       .subscribe(ordonnances => this.ordonnances = ordonnances);
   }
+
+  deleteOrdonnance(ordonnance: Ordonnance): void {
+    this.ordonnanceService.deleteOrdonnance(ordonnance.prescriptionId.toString())
+      .subscribe(() => {
+        this.ordonnances = this.ordonnances.filter(o => o.prescriptionId !== ordonnance.prescriptionId);
+      });
+  }
 }

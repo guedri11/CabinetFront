@@ -10,16 +10,16 @@ import { PatientListComponent } from './_components/patient-list/patient-list.co
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
 const usersModule = () => import('./users/users.module').then(x => x.UsersModule);
 const patientsModule = () => import('./_components/patient-list/patients.module').then(x => x.PatientsModule);
-//const ordonnancesModule = () => import('./_components/ordonnance-list/ordonnances.module').then(x => x.OrdonnancesModule);
-//const medicationsModule = () => import('./_components/medication-list/medications.module').then(x => x.MedicationsModule);
+const ordonnancesModule = () => import('./_components/ordonnance-list/ordonnances.module').then(x => x.OrdonnancesModule);
+const medicationsModule = () => import('./_components/medication-list/medications.module').then(x => x.MedicationsModule);
 
 
 const routes: Routes = [
     { path: '', component: HomeComponent,}, //canActivate: [AuthGuard] },
     { path: 'users', loadChildren: usersModule,},
     { path: 'account', loadChildren: accountModule },
-    { path: 'medication', component: MedicationListComponent,},//canActivate: [AuthGuard] },
-    { path: 'ordonnance', component: OrdonnanceListComponent,},// canActivate: [AuthGuard] },
+    { path: 'medications', loadChildren: medicationsModule},//canActivate: [AuthGuard] },
+    { path: 'ordonnances', loadChildren: ordonnancesModule},// canActivate: [AuthGuard] },
     { path: 'patients', loadChildren: patientsModule},
 
     // otherwise redirect to home

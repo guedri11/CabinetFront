@@ -1,9 +1,36 @@
 <div class="ordonnance-list">
-    <h2>List of Ordonnances</h2>
-    <ul>
-      <li *ngFor="let ordonnance of ordonnances">
-        {{ ordonnance.dateIssued }} - {{ ordonnance.doctorName }} - {{ ordonnance.patientName }}
-      </li>
-    </ul>
-  </div>
-  
+  <h2>List of Ordonnances</h2>
+  <a routerLink="add" class="btn btn-sm btn-success mb-2">Add Ordonnance</a>
+  <table class="table table-striped">
+      <thead>
+          <tr>
+              <th style="width: 15%">Prescription ID</th>
+              <th style="width: 15%">Patient ID</th>
+              <th style="width: 15%">Patient Age</th>
+              <th style="width: 15%">Patient Gender</th>
+              <th style="width: 15%">Doctor Name</th>
+              <th style="width: 15%">Date Issued</th>
+              <th style="width: 10%"></th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let ordonnance of ordonnances">
+              <td>{{ ordonnance.prescriptionId }}</td>
+              <td>{{ ordonnance.patientId }}</td>
+              <td>{{ ordonnance.patientAge }}</td>
+              <td>{{ ordonnance.patientGender }}</td>
+              <td>{{ ordonnance.doctorName }}</td>
+              <td>{{ ordonnance.dateIssued }}</td>
+              <td style="white-space: nowrap">
+                  <a routerLink="edit/{{ ordonnance.prescriptionId }}" class="btn btn-sm btn-primary me-1">Edit</a>
+                  <button (click)="deleteOrdonnance(ordonnance)" class="btn btn-sm btn-danger btn-delete-ordonnance">
+                      <span>Delete</span>
+                  </button>
+              </td>
+          </tr>
+          <tr *ngIf="!ordonnances || ordonnances.length === 0">
+              <td colspan="7" class="text-center">No ordonnances found</td>
+          </tr>
+      </tbody>
+  </table>
+</div>

@@ -17,6 +17,17 @@ export class MedicationListComponent implements OnInit {
 
   getMedications(): void {
     this.medicationService.getAllMedications()
-      .subscribe(medications => this.medications = medications);
+      .subscribe(
+        (medications: Medication[]) => {
+          this.medications = medications;
+        },
+        error => {
+          console.error('Error fetching medications:', error);
+        }
+      );
+  }
+
+  deleteMedication(medication: Medication): void {
+    // Implement deletion logic here
   }
 }

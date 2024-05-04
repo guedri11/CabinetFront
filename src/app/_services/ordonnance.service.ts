@@ -19,6 +19,10 @@ export class OrdonnanceService {
     return this.http.get<Ordonnance[]>(`${this.baseUrl}/getOrdonnances`);
   }
 
+  getOrdonnanceById(id: string): Observable<Ordonnance> {
+    return this.http.get<Ordonnance>(`${this.baseUrl}/getOrdonnanceById?id=${id}`);
+  }
+
   addOrdonnance(ordonnance: Ordonnance): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseUrl}/add_ordonnance`, ordonnance);
   }

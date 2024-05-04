@@ -1,9 +1,36 @@
-<div class="medication-list">
-    <h2>List of Medications</h2>
-    <ul>
-      <li *ngFor="let medication of medications">
-        {{ medication.medicineName }} - {{ medication.dosage }} - {{ medication.instructions }}
-      </li>
-    </ul>
-  </div>
-  
+<h1>Medications</h1>
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Add Medication</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 10%">ID</th>
+            <th style="width: 20%">Medicine Name</th>
+            <th style="width: 10%">Dosage</th>
+            <th style="width: 10%">Frequency</th>
+            <th style="width: 10%">Duration</th>
+            <th style="width: 10%">Route</th>
+            <th style="width: 20%">Instructions</th>
+            <th style="width: 10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let medication of medications">
+            <td>{{medication.id}}</td>
+            <td>{{medication.medicineName}}</td>
+            <td>{{medication.dosage}}</td>
+            <td>{{medication.frequency}}</td>
+            <td>{{medication.Duration}}</td>
+            <td>{{medication.route}}</td>
+            <td>{{medication.instructions}}</td>
+            <td style="white-space: nowrap">
+                <a routerLink="edit/{{medication.id}}" class="btn btn-sm btn-primary me-1">Edit</a>
+                <button (click)="deleteMedication(medication)" class="btn btn-sm btn-danger btn-delete-medication">
+                    <span>Delete</span>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="!medications || medications.length === 0">
+            <td colspan="8" class="text-center">No medications found</td>
+        </tr>
+    </tbody>
+</table>

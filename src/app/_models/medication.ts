@@ -1,4 +1,5 @@
 export interface Medication {
+    id: number;
     medicineName: string;
     dosage: string;
     frequency: string;
