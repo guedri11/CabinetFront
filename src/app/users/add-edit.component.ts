@@ -8,7 +8,8 @@ import { User } from '@app/_models';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent implements OnInit {
-    form!: FormGroup;
+    form: FormGroup;
+    user: User;
     id?: string;
     title!: string;
     loading = false;
@@ -21,11 +22,8 @@ export class AddEditComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         private alertService: AlertService
-    ) { }
-
-    ngOnInit() {
-        this.id = this.route.snapshot.params['id'];
-
+    ) {
+        this.user = {} as User;
         // form with validation rules
         this.form = this.formBuilder.group({
             prenom: ['', Validators.required],
@@ -36,6 +34,7 @@ export class AddEditComponent implements OnInit {
             email: [''],
             telephone: ['']
         });
+    }
 
         this.title = 'Add Patient';
         if (this.id) {
