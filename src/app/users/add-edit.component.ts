@@ -4,10 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/_services';
+import { User } from '../_models';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent implements OnInit {
-    form!: FormGroup;
+    form: FormGroup;
+    user: User;
     id?: string;
     title!: string;
     loading = false;
@@ -20,11 +22,8 @@ export class AddEditComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         private alertService: AlertService
-    ) { }
-
-    ngOnInit() {
-        this.id = this.route.snapshot.params['id'];
-
+    ) {
+        this.user = {} as User;
         // form with validation rules
         this.form = this.formBuilder.group({
             firstName: ['', Validators.required],
@@ -33,17 +32,17 @@ export class AddEditComponent implements OnInit {
             // password only required in add mode
             password: ['', [Validators.minLength(6), ...(!this.id ? [Validators.required] : [])]]
         });
+    }
 
+    ngOnInit() {
+        this.id = this.route.snapshot.params['id'];
         this.title = 'Add User';
         if (this.id) {
-            // edit mode
             this.title = 'Edit User';
             this.loading = true;
             this.accountService.getById(this.id)
-                .pipe(first())
                 .subscribe(x => {
-                    this.form.patchValue(x);
-                    this.loading = false;
+                    this.user = x;
                 });
         }
     }
