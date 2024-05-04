@@ -3,6 +3,9 @@
     <div class="navbar-nav">
         <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+        <a class="nav-item nav-link" routerLink="/patients" routerLinkActive="active">Patients</a>
+        <a class="nav-item nav-link" routerLink="/ordonnance" routerLinkActive="active">Ordonnances</a>
+        <a class="nav-item nav-link" routerLink="/medication" routerLinkActive="active">medications</a>
         <button class="btn btn-link nav-item nav-link" (click)="logout()">Logout</button>
     </div>
 </nav>
@@ -12,12 +15,3 @@
     <alert></alert>
     <router-outlet></router-outlet>
 </div>
-
-<!-- <div class="text-center mt-4">
-    <p>
-        <a href="https://jasonwatmore.com/post/2022/11/29/angular-14-user-registration-and-login-example-tutorial" target="_top">Angular 14 - User Registration and Login Example & Tutorial</a>
-    </p>
-    <p>
-        <a href="https://jasonwatmore.com" target="_top">JasonWatmore.com</a>
-    </p>
-</div> -->

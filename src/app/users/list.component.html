@@ -3,17 +3,27 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th style="width: 30%">First Name</th>
-            <th style="width: 30%">Last Name</th>
-            <th style="width: 30%">Username</th>
+            <th style="width: 10%">ID</th>
+            <th style="width: 10%">First Name</th>
+            <th style="width: 10%">Last Name</th>
+            <th style="width: 10%">Username</th>
+            <th style="width: 10%">Password</th>
+            <th style="width: 10%">Address</th>
+            <th style="width: 10%">Email</th>
+            <th style="width: 10%">Telephone</th>
             <th style="width: 10%"></th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let user of users">
-            <td>{{user.firstName}}</td>
-            <td>{{user.lastName}}</td>
+            <td>{{user.id}}</td>
+            <td>{{user.prenom}}</td>
+            <td>{{user.nom}}</td>
             <td>{{user.username}}</td>
+            <td>{{user.password}}</td>
+            <td>{{user.adresse}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.telephone}}</td>
             <td style="white-space: nowrap">
                 <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary me-1">Edit</a>
                 <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
@@ -22,10 +32,8 @@
                 </button>
             </td>
         </tr>
-        <tr *ngIf="!users">
-            <td colspan="4" class="text-center">
-                <span class="spinner-border spinner-border-lg align-center"></span>
-            </td>
+        <tr *ngIf="!users || users.length === 0">
+            <td colspan="9" class="text-center">No users found</td>
         </tr>
     </tbody>
 </table>

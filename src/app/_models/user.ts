@@ -2,7 +2,10 @@
     id?: string;
     username?: string;
     password?: string;
-    firstName?: string;
-    lastName?: string;
+    adresse?: string;
+    email?: string;
+    nom?: string;
+    prenom?: string;
+    telephone?: string;
     token?: string;
 }

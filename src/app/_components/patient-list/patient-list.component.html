@@ -1,0 +1,34 @@
+<h1>Patients</h1>
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Add Patient</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 10%">ID</th>
+            <th style="width: 10%">First Name</th>
+            <th style="width: 10%">Last Name</th>
+            <th style="width: 10%">Address</th>
+            <th style="width: 10%">Email</th>
+            <th style="width: 10%">Telephone</th>
+            <th style="width: 10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let patient of patients">
+            <td>{{patient.id}}</td>
+            <td>{{patient.prenom}}</td>
+            <td>{{patient.nom}}</td>
+            <td>{{patient.adresse}}</td>
+            <td>{{patient.email}}</td>
+            <td>{{patient.telephone}}</td>
+            <td style="white-space: nowrap">
+                <a routerLink="edit/{{patient.id}}" class="btn btn-sm btn-primary me-1">Edit</a>
+                <button (click)="deletePatient(patient)" class="btn btn-sm btn-danger btn-delete-patient">
+                    <span>Delete</span>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="!patients || patients.length === 0">
+            <td colspan="7" class="text-center">No patients found</td>
+        </tr>
+    </tbody>
+</table>

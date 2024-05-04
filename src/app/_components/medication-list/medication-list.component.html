@@ -1,0 +1,9 @@
+<div class="medication-list">
+    <h2>List of Medications</h2>
+    <ul>
+      <li *ngFor="let medication of medications">
+        {{ medication.medicineName }} - {{ medication.dosage }} - {{ medication.instructions }}
+      </li>
+    </ul>
+  </div>
+  

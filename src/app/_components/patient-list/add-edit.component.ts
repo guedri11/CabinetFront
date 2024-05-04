@@ -3,13 +3,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AccountService, AlertService } from '@app/_services';
-import { User } from '@app/_models';
+import { PatientService } from '@app/_services';
+import { Patient } from '@app/_models/patient';
 
 @Component({ templateUrl: 'add-edit.component.html' })
-export class AddEditComponent implements OnInit {
+export class PatientAddEditComponent implements OnInit {
     form!: FormGroup;
-    id?: string;
+    id?: number;
     title!: string;
     loading = false;
     submitting = false;
@@ -19,8 +19,7 @@ export class AddEditComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private accountService: AccountService,
-        private alertService: AlertService
+        private patientService: PatientService
     ) { }
 
     ngOnInit() {
@@ -32,9 +31,9 @@ export class AddEditComponent implements OnInit {
             nom: ['', Validators.required],
             username: ['', Validators.required],
             password: ['', [Validators.minLength(6), ...(this.id ? [] : [Validators.required])]],
-            adresse: [''],
-            email: [''],
-            telephone: ['']
+            adresse: ['', Validators.required],
+            email: ['', Validators.required],
+            telephone: ['', Validators.required]
         });
 
         this.title = 'Add Patient';
@@ -42,15 +41,15 @@ export class AddEditComponent implements OnInit {
             // edit mode
             this.title = 'Edit Patient';
             this.loading = true;
-            this.accountService.getById(this.id)
+            this.patientService.getPatientById(this.id)
                 .pipe(first())
                 .subscribe(
-                    (user: User) => {
-                        this.form.patchValue(user);
+                    (patient: Patient) => {
+                        this.form.patchValue(patient);
                         this.loading = false;
                     },
                     error => {
-                        this.alertService.error(error);
+                        console.error(error);
                         this.loading = false;
                     }
                 );
@@ -63,43 +62,40 @@ export class AddEditComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
 
-        // reset alerts on submit
-        this.alertService.clear();
-
         // stop here if form is invalid
         if (this.form.invalid) {
             return;
         }
 
         this.submitting = true;
-        this.saveUser();
+        this.savePatient();
     }
 
-    private saveUser() {
-        const user = this.form.value;
+    private savePatient() {
+        const patient = this.form.value;
         if (this.id) {
-            this.accountService.update(this.id, user)
+            this.patientService.updatePatient(patient)
                 .pipe(first())
                 .subscribe({
                     next: () => {
-                        this.alertService.success('User updated successfully', { keepAfterRouteChange: true });
-                        this.router.navigate(['/users']);
+                        console.log('Patient updated successfully');
+                        this.router.navigate(['/patients']);
                     },
                     error: error => {
-                        this.alertService.error(error);
+                        console.error(error);
                         this.submitting = false;
                     }
                 });
         } else {
-            this.accountService.register(user)
+            this.patientService.addPatient(patient)
                 .pipe(first())
                 .subscribe({
                     next: () => {
-                        this.alertService.success('User created successfully', { keepAfterRouteChange: true });
-                        this.router.navigate(['/users']);
+                        console.log('Patient created successfully');
+                        this.router.navigate(['/patients']);
                     },
                     error: error => {
-                        this.alertService.error(error);
+                        console.error(error);
                         this.submitting = false;
                     }
                 });
